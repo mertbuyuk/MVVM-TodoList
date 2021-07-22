@@ -6,11 +6,12 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TasksDao {
     @Query("SELECT * FROM task")
-    suspend fun getAllTask()
+    fun getAllTask() : Flow<List<Task>>
 
     @Insert(onConflict = REPLACE)
     suspend fun insert(task: Task)
