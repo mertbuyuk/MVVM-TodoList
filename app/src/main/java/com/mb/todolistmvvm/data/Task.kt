@@ -10,8 +10,8 @@ import java.text.DateFormat
 @Parcelize
 data class Task(
     val task : String,
-    val important : Boolean,
-    val check : Boolean,
+    val important : Boolean = false,
+    val check : Boolean = false,
     val created: Long = System.currentTimeMillis(),
     @PrimaryKey(autoGenerate = true) val id : Int = 0
 ) : Parcelable{
