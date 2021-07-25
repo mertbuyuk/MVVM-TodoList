@@ -39,3 +39,4 @@ object AppModule {
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
 annotation class ApplicationScope
+
