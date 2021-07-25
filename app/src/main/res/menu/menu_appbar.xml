@@ -26,13 +26,13 @@
     </item>
 
     <item
-        android:id="@+id/action_hide_completed_tasks"
+        android:id="@+id/actionHide"
         android:checkable="true"
         android:title="Hide completed"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_delete_all_completed_tasks"
+        android:id="@+id/actionDeleteCompleted"
         android:title="Delete all completed"
         app:showAsAction="never" />
 </menu>

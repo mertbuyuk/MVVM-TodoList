@@ -6,12 +6,24 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import androidx.room.Update
+import com.mb.todolistmvvm.ui.tasks.SortOrder
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TasksDao {
-    @Query("SELECT * FROM task WHERE task LIKE '%' || :item || '%' ORDER BY important DESC")
-    fun getAllTask(item : String) : Flow<List<Task>>
+
+
+    fun getAllTask(task : String,sortOrder: SortOrder,hide:Boolean) =
+        when(sortOrder){
+            SortOrder.BY_DATE -> getTaskSortedByDate(task,hide)
+            SortOrder.BY_NAME -> getTaskSortedByName(task,hide)
+        }
+
+    @Query("SELECT * FROM task WHERE (`check` != :hide OR `check`=0) AND task LIKE '%' || :task || '%' ORDER BY important DESC,task")
+    fun getTaskSortedByName(task: String,hide : Boolean) : Flow<List<Task>>
+
+    @Query("SELECT * FROM task WHERE (`check` != :hide OR `check`=0) AND task LIKE '%' || :task || '%' ORDER BY important DESC,created")
+    fun getTaskSortedByDate(task : String, hide : Boolean) : Flow<List<Task>>
 
     @Insert(onConflict = REPLACE)
     suspend fun insert(task: Task)

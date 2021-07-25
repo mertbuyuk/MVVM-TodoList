@@ -1,8 +1,10 @@
 package com.mb.todolistmvvm.ui.tasks
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.appcompat.widget.SearchView
@@ -46,7 +48,29 @@ class TasksFragment : Fragment(R.layout.fragment_tasks) {
         searchView.queryChanged {
             viewModel.search.value = it
         }
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.actionSortByDate->{
+                viewModel.sortOrder.value = SortOrder.BY_DATE
+                true
+            }
+            R.id.actionSortByName->{
+                viewModel.sortOrder.value = SortOrder.BY_NAME
+                true
+            }
+            R.id.actionHide->{
+                item.isChecked = !item.isChecked
+                Log.i("ischeck",item.isChecked.toString())
+                viewModel.hide.value = item.isChecked
+                true
+            }
+            R.id.actionDeleteCompleted->{
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 
