@@ -13,12 +13,13 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
+
 
 data class Filtered(val sortOrder: SortOrder, val hideCompleted: Boolean)
 
 enum class SortOrder{BY_DATE, BY_NAME}
 
+@Singleton
 class PreferencesManager @Inject constructor(@ApplicationContext context: Context){
     private val dataStore = context.createDataStore("user_pref")
 
@@ -41,7 +42,7 @@ class PreferencesManager @Inject constructor(@ApplicationContext context: Contex
             Filtered(sortOrder,hideCompleted)
         }
 
-    suspend fun updateSortOrder(sortOrder: SortOrder){
+    suspend fun  updateSortOrder(sortOrder: SortOrder){
         dataStore.edit { prefs->
             prefs[PreferencesKeys.SORT_ORDER] = sortOrder.name
         }
