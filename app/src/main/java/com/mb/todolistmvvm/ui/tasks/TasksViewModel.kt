@@ -5,6 +5,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.mb.todolistmvvm.data.PreferencesManager
 import com.mb.todolistmvvm.data.SortOrder
+import com.mb.todolistmvvm.data.Task
 import com.mb.todolistmvvm.data.TasksDao
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TasksViewModel @Inject constructor(
-    tasksDao: TasksDao,
+    private val tasksDao: TasksDao,
     private val preferencesManager: PreferencesManager
 ) :ViewModel(){
 
@@ -31,6 +32,8 @@ class TasksViewModel @Inject constructor(
         tasksDao.getAllTask(search,filteredPrefs.sortOrder,filteredPrefs.hideCompleted)
     }
 
+    val tasks = taskFlow.asLiveData()
+
     fun onSortOrderSelected(sortOrder: SortOrder) = viewModelScope.launch {
         preferencesManager.updateSortOrder(sortOrder)
     }
@@ -39,6 +42,15 @@ class TasksViewModel @Inject constructor(
         preferencesManager.updateHideCompleted(hideCompleted)
     }
 
-    val tasks = taskFlow.asLiveData()
+    fun onTaskSelect(task: Task) {
+
+    }
+
+    fun onCheckBoxChecked(task: Task, completed: Boolean) = viewModelScope.launch {
+        tasksDao.update(task.copy(check = completed))
+    }
+
+
+
 }
 

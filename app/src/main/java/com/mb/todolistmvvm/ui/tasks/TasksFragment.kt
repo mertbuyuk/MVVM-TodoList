@@ -12,17 +12,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mb.todolistmvvm.R
 import com.mb.todolistmvvm.data.SortOrder
+import com.mb.todolistmvvm.data.Task
 import com.mb.todolistmvvm.databinding.FragmentTasksBinding
+import com.mb.todolistmvvm.util.OnItemClickListener
 import com.mb.todolistmvvm.util.queryChanged
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TasksFragment : Fragment(R.layout.fragment_tasks) {
+class TasksFragment : Fragment(R.layout.fragment_tasks), OnItemClickListener {
 
     private val viewModel : TasksViewModel by viewModels()
-    private val taskAdapter  = TaskAdapter()
+    private val taskAdapter  = TaskAdapter(this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -81,6 +83,13 @@ class TasksFragment : Fragment(R.layout.fragment_tasks) {
         }
     }
 
+    override fun onItemClick(task: Task) {
+        viewModel.onTaskSelect(task)
+    }
+
+    override fun onCheckBoxClick(task: Task, isCompleted: Boolean) {
+        viewModel.onCheckBoxChecked(task,isCompleted)
+    }
 
 
 }

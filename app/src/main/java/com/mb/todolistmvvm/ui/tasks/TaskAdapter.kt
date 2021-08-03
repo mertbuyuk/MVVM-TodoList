@@ -8,10 +8,27 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mb.todolistmvvm.data.Task
 import com.mb.todolistmvvm.databinding.ItemTasksBinding
+import com.mb.todolistmvvm.util.OnItemClickListener
 
-class TaskAdapter : ListAdapter<Task, TaskAdapter.TasksViewHolder>(DiffCallback()) {
+class TaskAdapter(private val listener: OnItemClickListener) : ListAdapter<Task, TaskAdapter.TasksViewHolder>(DiffCallback()) {
 
-    class TasksViewHolder(private val binding: ItemTasksBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class TasksViewHolder(private val binding: ItemTasksBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.apply {
+                checkbox.setOnClickListener {
+                    val position = adapterPosition
+                    val task = getItem(position)
+                    listener.onCheckBoxClick(task,checkbox.isChecked)
+                }
+
+                root.setOnClickListener {
+                    val position = adapterPosition
+                    val task = getItem(position)
+                    listener.onItemClick(task)
+                }
+            }
+        }
 
         fun bind(task: Task){
             binding.apply {
